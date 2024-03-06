@@ -133,3 +133,24 @@ class TestDeckAPI(unittest.TestCase):
 
         # Assert the success status returned from the function
         self.assertEqual(add_cards_response['success'], True)
+
+    def test_shuffle_piles(self):
+
+        deck_id = "77vjh43p4f2u"
+        pile_name = "player1Hand"
+
+        # Shuffle the piles
+        shuffle_response = self.logic.shuffle_piles(deck_id, pile_name)
+
+        # Check if the request was successful
+        self.assertTrue(shuffle_response['success'])
+
+        # Check if the deck_id returned is correct
+        self.assertEqual(shuffle_response['deck_id'], deck_id)
+
+        # Check if the remaining cards in the deck are as expected
+        self.assertEqual(shuffle_response['remaining'], 8)
+        # Check if the pile exists and contains the correct number of cards
+        self.assertIn('piles', shuffle_response)
+        self.assertIn(pile_name, shuffle_response['piles'])
+        self.assertEqual(shuffle_response['piles'][pile_name]['remaining'], 2)

@@ -40,3 +40,16 @@ class DeckLogic:
             print(f"Unexpected error occurred: {e}")
             return {'success': False, 'error': str(e)}
 
+    def shuffle_piles(self, deck_id, pile_name):
+        try:
+            response = self.client.shuffle_piles(deck_id, pile_name)
+            return response
+        except requests.RequestException as e:
+            # Handle any network or HTTP-related errors
+            print(f"Error occurred: {e}")
+            return {'success': False, 'error': str(e)}
+        except Exception as e:
+            # Handle any other unexpected errors
+            print(f"Unexpected error occurred: {e}")
+            return {'success': False, 'error': str(e)}
+

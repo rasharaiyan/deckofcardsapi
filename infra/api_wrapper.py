@@ -3,6 +3,7 @@ import requests
 class DeckOfCardsAPI:
     BASE_URL = "https://deckofcardsapi.com/api/deck"
 
+
     def __init__(self):
         pass
 
@@ -47,4 +48,10 @@ class DeckOfCardsAPI:
     def shuffle_pile(deck_id, pile_name):
         endpoint = f"{DeckInfra.BASE_URL}/{deck_id}/pile/{pile_name}/shuffle/"
         response = requests.get(endpoint)
+        return response.json()
+
+    def shuffle_piles(self, deck_id, pile_name):
+        endpoint = f"{self.BASE_URL}/{deck_id}/pile/{pile_name}/shuffle/"
+        response = requests.get(endpoint)
+        response.raise_for_status()  # Raise an exception for 4XX and 5XX status codes
         return response.json()
