@@ -1,3 +1,4 @@
+import requests
 from infra.api_wrapper import DeckOfCardsAPI
 
 class DeckLogic:
@@ -26,11 +27,16 @@ class DeckLogic:
         response = self.client.create_partial_deck(cards)
         return response.json()
 
-
     def add_cards_to_pile(self, deck_id, pile_name, cards):
-        response = self.client.add_cards_to_pile(deck_id, pile_name, cards)
-        return response.json()
-
-   def shuffle_pile(deck_id, pile_name):
-        return DeckInfra.shuffle_pile(deck_id, pile_name)
+        try:
+            response = self.client.add_cards_to_pile(deck_id, pile_name, cards)
+            return response
+        except requests.RequestException as e:
+            # Handle any network or HTTP-related errors
+            print(f"Error occurred: {e}")
+            return {'success': False, 'error': str(e)}
+        except Exception as e:
+            # Handle any other unexpected errors
+            print(f"Unexpected error occurred: {e}")
+            return {'success': False, 'error': str(e)}
 

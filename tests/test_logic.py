@@ -108,7 +108,6 @@ class TestDeckAPI(unittest.TestCase):
             self.assertTrue(card['images']['svg'].startswith('https://deckofcardsapi.com/static/img/'))
             self.assertTrue(card['images']['png'].startswith('https://deckofcardsapi.com/static/img/'))
 
-
     def test_add_cards_to_pile(self):
         # Create a new deck to ensure the test is isolated
         new_deck_response = self.logic.create_new_deck()
@@ -124,9 +123,13 @@ class TestDeckAPI(unittest.TestCase):
         # Add cards to the specified pile
         add_cards_response = self.logic.add_cards_to_pile(deck_id, pile_name, cards)
 
-        # Check basic response structure and values
+        # Check if the request was successful
+        if add_cards_response['success']:
+            # Check basic response structure and values
+            self.assertEqual(add_cards_response['deck_id'], deck_id)
+        else:
+            # If the request failed, print the error message
+            print(f"Error occurred: {add_cards_response['error']}")
+
+        # Assert the success status returned from the function
         self.assertEqual(add_cards_response['success'], True)
-        self.assertEqual(add_cards_response['deck_id'], deck_id)
-
-
-
